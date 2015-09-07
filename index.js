@@ -14,7 +14,16 @@ window.onload = function() {
 	DrawActivities(paper,3);
 	DrawIfCondition(paper,4);
 	DrawIfElseCondition(paper,6);
+	DrawLoopActivities(paper,8);
 }
+function DrawLoopActivities(paper,y)
+{
+	paper.rect(0, 0, 110*3, 60,8).translate(width/2-55*3,5+100*y).attr({fill: '#ffff00'});
+	DrawSubActivity(paper,y,-1);
+	DrawSubActivity(paper,y,0);
+	DrawSubActivity(paper,y,1);
+}
+
 
 function DrawIfElseCondition(paper,y){
 	DrawCondition(paper,y);
