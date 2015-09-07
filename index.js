@@ -12,12 +12,13 @@ window.onload = function() {
 	DrawActivity(paper,1);
 	DrawActivity(paper,2);
 	DrawActivities(paper,3);
+	DrawCondition(paper,4);
 	
-	
-	
-	
-	
-	var d = "M 200,235 L 250,210 L 300,235 L 250,260 L 200,235";
+}
+
+function DrawCondition(paper,y)
+{
+	var d = "M "+(width/2-50)+","+(35+100*y)+" L "+(width/2)+","+(10+100*y)+" L "+(width/2+50)+","+(35+100*y)+" L "+(width/2)+","+(60+100*y)+" L "+(width/2-50)+","+(35+100*y)+"";
 	 var condition = paper.path(d);
 	 condition.attr("fill", "#F4A460");
 }
