@@ -12,8 +12,13 @@ window.onload = function() {
 	DrawActivity(paper,1);
 	DrawActivity(paper,2);
 	DrawActivities(paper,3);
-	DrawCondition(paper,4);
+	DrawIfCondition(paper,4);
 	
+}
+
+function DrawIfCondition(paper,y){
+	DrawCondition(paper,y);
+	DrawActivities(paper,y+1);
 }
 
 function DrawCondition(paper,y)
@@ -38,9 +43,9 @@ function DrawSubActivity(paper,y,number)
 function DrawActivities(paper,y)
 {
 	paper.rect(0, 0, 110*3, 60).translate(width/2-55*3,5+100*y).attr({fill: '#c0c0c0'});
-	DrawSubActivity(paper,3,-1);
-	DrawSubActivity(paper,3,0);
-	DrawSubActivity(paper,3,1);
+	DrawSubActivity(paper,y,-1);
+	DrawSubActivity(paper,y,0);
+	DrawSubActivity(paper,y,1);
 }
 
 
