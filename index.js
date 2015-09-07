@@ -13,7 +13,20 @@ window.onload = function() {
 	DrawActivity(paper,2);
 	DrawActivities(paper,3);
 	DrawIfCondition(paper,4);
-	
+	DrawIfElseCondition(paper,6);
+}
+
+function DrawIfElseCondition(paper,y){
+	DrawCondition(paper,y);
+	DrawCondActivities(paper,y+1,-2);
+	DrawCondActivities(paper,y+1,2);
+}
+function DrawCondActivities(paper,y,offset)
+{
+	paper.rect(0, 0, 110*3, 60).translate(width/2-55*3+offset*110,5+100*y).attr({fill: '#c0c0c0'});
+	DrawSubActivity(paper,y,-1+offset);
+	DrawSubActivity(paper,y,0+offset);
+	DrawSubActivity(paper,y,1+offset);
 }
 
 function DrawIfCondition(paper,y){
