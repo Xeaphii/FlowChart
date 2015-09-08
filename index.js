@@ -22,7 +22,15 @@ window.onload = function() {
 		//Loop for activities
 	offset = 0;
 	for (j = 0; j < ActivitiesArray.length; j++) { 
-		if(ActivitiesArray[j].toLowerCase().indexOf("if")>-1){
+		if(ActivitiesArray[j].toLowerCase().indexOf("repeat")>-1){
+			//i
+			//DrawIfElseCondition(paper,j+1+offset,ActivitiesArray[j]);
+			DrawLoopActivities(paper,j+1+offset,ActivitiesArray[j]);
+			if(isIfElse == 1){
+				isIfElse = 0;
+			}
+		}
+		else if(ActivitiesArray[j].toLowerCase().indexOf("if")>-1){
 			if(ActivitiesArray[j].split("/").length>0){
 				DrawIfElseCondition(paper,j+1+offset,ActivitiesArray[j]);
 			}else{
@@ -56,13 +64,23 @@ function DrawElipse(paper,y){
 	paper.text(width/2, 35+100*y, ReformatText("START")).attr({fill: '#000000',"font-size": 14, "font-family": "Arial, Helvetica, sans-serif"});
 	
 }
-function DrawLoopActivities(paper,y)
+function DrawLoopActivities(paper,y,ActText)
 {
-	paper.text(width/2+ 110*2, 100*y+40, ReformatText("Repeat (10) times")).attr({fill: '#000000',"font-size": 12, "font-family": "Arial, Helvetica, sans-serif"});
-	paper.rect(0, 0, 110*3, 60,8).translate(width/2-55*3,5+100*y).attr({fill: '#D4FF5F'});
-	DrawSubActivity(paper,y,-1);
-	DrawSubActivity(paper,y,0);
-	DrawSubActivity(paper,y,1);
+	SubActivitiesArrayT = ActText.split("-");
+	
+	SubActivitiesArray = SubActivitiesArrayT[1].split("+");
+		paper.text(width/2+ 110*(SubActivitiesArray.length)-55*SubActivitiesArray.length+55, 100*y+40, ReformatText(SubActivitiesArrayT[0]+" times")).attr({fill: '#000000',"font-size": 12, "font-family": "Arial, Helvetica, sans-serif"});
+
+	paper.rect(0, 0, 110*SubActivitiesArray.length, 60,8).translate(width/2-55*SubActivitiesArray.length,5+100*y).attr({fill: '#D4FF5F'});
+	if(SubActivitiesArray.length%2 == 0){
+		for(iTemp = Math.ceil(-SubActivitiesArray.length/2) ; iTemp < Math.floor(SubActivitiesArray.length/2);iTemp++){
+			DrawSubActivity(paper,y,iTemp+.5,SubActivitiesArray[iTemp+Math.floor(SubActivitiesArray.length/2)]);
+		}
+	}else{
+		for(iTemp = Math.ceil(-SubActivitiesArray.length/2) ; iTemp <= Math.floor(SubActivitiesArray.length/2);iTemp++){
+			DrawSubActivity(paper,y,iTemp,SubActivitiesArray[iTemp+Math.floor(SubActivitiesArray.length/2)]);
+		}
+	}
 }
 
 
