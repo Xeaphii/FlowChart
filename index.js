@@ -20,13 +20,18 @@ window.onload = function() {
 	//DrawActivities(paper,0);
 	DrawElipse(paper,0);
 		//Loop for activities
+	offset = 0;
 	for (j = 0; j < ActivitiesArray.length; j++) { 
-		
-		if(ActivitiesArray[j].split("+").length>1){
-			DrawActivities(paper,3,ActivitiesArray[j]);
+		if(ActivitiesArray[j].toLowerCase().indexOf("if")>-1){
+			DrawIfCondition(paper,j+1+offset,ActivitiesArray[j]);
+			offset  += 1;
+		}else if(ActivitiesArray[j].split("+").length>1){
+			DrawActivities(paper,j+1+offset,ActivitiesArray[j]);
+			
 		}else{
 			
-			DrawActivity(paper,j+1,ActivitiesArray[j]);
+			DrawActivity(paper,j+1+offset,ActivitiesArray[j]);
+			
 		}
 		
 	
@@ -85,14 +90,16 @@ function DrawCondSubActivity(paper,y,number)
 }
 
 
-function DrawIfCondition(paper,y){
-	DrawCondition(paper,y);
+function DrawIfCondition(paper,y,ActText){
+	
+	SubActivitiesArray = ActText.split("-");
+	DrawCondition(paper,y,SubActivitiesArray[0]);
 
 	paper.text(width/2+20, 100*y+80, ReformatText(" IF YES")).attr({fill: '#000000',"font-size": 12, "font-family": "Arial, Helvetica, sans-serif"});
-	DrawActivities(paper,y+1);
+	DrawActivities(paper,y+1,SubActivitiesArray[1]);
 }
 
-function DrawCondition(paper,y)
+function DrawCondition(paper,y,ActText)
 {
 	if(isIfElse == 0){
 	var LengthLine = "M "+(width/2)+","+(-40+100*y)+" L "+(width/2)+","+(10+100*y);
@@ -101,7 +108,7 @@ function DrawCondition(paper,y)
 	var d = "M "+(width/2-75)+","+(35+100*y)+" L "+(width/2)+","+(10+100*y)+" L "+(width/2+75)+","+(35+100*y)+" L "+(width/2)+","+(60+100*y)+" L "+(width/2-75)+","+(35+100*y)+"";
 	 var condition = paper.path(d);
 	 condition.attr("fill", "#E8E053");
-	 paper.text(width/2, 35+100*y, ReformatText("If(Say 'I am cool')")).attr({fill: '#000000',"font-size": 9, "font-family": "Arial, Helvetica, sans-serif"});
+	 paper.text(width/2, 35+100*y, ReformatText(ActText)).attr({fill: '#000000',"font-size": 10, "font-family": "Arial, Helvetica, sans-serif"});
 }
 
 function DrawActivity(paper,y,ActText)
