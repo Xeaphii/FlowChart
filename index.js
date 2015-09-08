@@ -31,10 +31,12 @@ window.onload = function() {
 			}
 		}
 		else if(ActivitiesArray[j].toLowerCase().indexOf("if")>-1){
-			if(ActivitiesArray[j].split("/").length>0){
+			if(ActivitiesArray[j].split("/").length>1){
 				DrawIfElseCondition(paper,j+1+offset,ActivitiesArray[j]);
+				
 			}else{
 				DrawIfCondition(paper,j+1+offset,ActivitiesArray[j]);
+				
 			}
 			offset  += 1;
 		}else if(ActivitiesArray[j].split("+").length>1){
@@ -132,6 +134,10 @@ function DrawIfCondition(paper,y,ActText){
 	DrawCondition(paper,y,SubActivitiesArray[0]);
 
 	paper.text(width/2+20, 100*y+80, ReformatText(" IF YES")).attr({fill: '#000000',"font-size": 12, "font-family": "Arial, Helvetica, sans-serif"});
+	if(isIfElse == 1){
+					isIfElse = 0;
+	}
+				
 	DrawActivities(paper,y+1,SubActivitiesArray[1]);
 }
 
