@@ -2,27 +2,46 @@ var width = window.innerWidth
 		|| document.documentElement.clientWidth
 		|| document.body.clientWidth;
 		width= width -100;
+var height = window.innerHeight
+		|| document.documentElement.clientHeight
+		|| document.body.clientHeight;
 
 var isIfElse = 0;
 window.onload = function() {
+	data=  getURLParameters("string_input");
+	ActivitiesArray = data.split(",");
+	height = (ActivitiesArray.length/5)*height;
+	
+	
 
-    var paper = new Raphael(document.getElementById('canvas_container'), width, 1500);
+    var paper = new Raphael(document.getElementById('canvas_container'), width, height);
 	//DrawActivity(paper,0);
 
 	//DrawActivities(paper,0);
 	DrawElipse(paper,0);
-	DrawActivity(paper,1);
-	DrawActivity(paper,2);
-	DrawActivities(paper,3);
-	DrawIfCondition(paper,4);
-
-	DrawIfElseCondition(paper,6);
-
-
-	DrawLoopActivities(paper,8);
-	if(isIfElse == 1){
-		isIfElse = 0;
+		//Loop for activities
+	for (j = 0; j < ActivitiesArray.length; j++) { 
+		//checking for sub activitiess
+		SubActivities = ActivitiesArray[j].split("/");	
+		if(SubActivities.length>1){
+			if(ActivitiesArray[j].toLowerCase().indexOf("repeat")>-1){
+				
+			}else{
+				
+			}
+			
+		}else{
+			if(ActivitiesArray[j].toLowerCase().indexOf("repeat")>-1){
+				
+			}else{
+				
+			}
+			DrawActivity(paper,j+1,ActivitiesArray[j]);
+		}
+		
+	
 	}
+	
 
 }
 function DrawElipse(paper,y){
@@ -89,20 +108,20 @@ function DrawCondition(paper,y)
 	var LengthLine = "M "+(width/2)+","+(-40+100*y)+" L "+(width/2)+","+(10+100*y);
 	paper.path(LengthLine);
 	}
-	var d = "M "+(width/2-50)+","+(35+100*y)+" L "+(width/2)+","+(10+100*y)+" L "+(width/2+50)+","+(35+100*y)+" L "+(width/2)+","+(60+100*y)+" L "+(width/2-50)+","+(35+100*y)+"";
+	var d = "M "+(width/2-75)+","+(35+100*y)+" L "+(width/2)+","+(10+100*y)+" L "+(width/2+75)+","+(35+100*y)+" L "+(width/2)+","+(60+100*y)+" L "+(width/2-75)+","+(35+100*y)+"";
 	 var condition = paper.path(d);
 	 condition.attr("fill", "#E8E053");
 	 paper.text(width/2, 35+100*y, ReformatText("If(Say 'I am cool')")).attr({fill: '#000000',"font-size": 9, "font-family": "Arial, Helvetica, sans-serif"});
 }
 
-function DrawActivity(paper,y)
+function DrawActivity(paper,y,ActText)
 {
 	if(isIfElse == 0){
 	var d = "M "+(width/2)+","+(-40+100*y)+" L "+(width/2)+","+(10+100*y);
 	paper.path(d);
 	}
 	paper.rect(0, 0, 100, 50).translate(width/2-50,10+100*y).attr({fill: '#9cf'});
-	paper.text(width/2, 35+100*y, ReformatText("This should be inside it and This should be inside itshould be inside it")).attr({fill: '#000000'});
+	paper.text(width/2, 35+100*y, ReformatText(ActText)).attr({fill: '#000000'});
 }
 function DrawSubActivity(paper,y,number)
 {
@@ -141,3 +160,39 @@ function ReformatText(input){
 	}
 	return output;
 }
+
+function getURLParameters(paramName) 
+  {
+   var sURL = window.document.URL.toString();
+   
+   if (sURL.indexOf("?") > 0)
+   {
+    var arrParams = sURL.split("?"); 
+     
+    var arrURLParams = arrParams[1].split("&");
+    
+    var arrParamNames = new Array(arrURLParams.length);
+    var arrParamValues = new Array(arrURLParams.length);
+    
+    var i = 0;
+    for (i=0;i<arrURLParams.length;i++)
+    {
+     var sParam =  arrURLParams[i].split("=");
+     arrParamNames[i] = sParam[0];
+     if (sParam[1] != "")
+      arrParamValues[i] = unescape(sParam[1]);
+     else
+      arrParamValues[i] = "No Value";
+    }
+    
+    for (i=0;i<arrURLParams.length;i++)
+    {
+        if(arrParamNames[i] == paramName){
+      //alert("Param from activity:"+arrParamValues[i]);
+      return arrParamValues[i];
+      }
+    }
+    return "No Parameters Found";
+   }
+   
+ }	
