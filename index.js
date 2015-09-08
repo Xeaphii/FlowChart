@@ -10,7 +10,7 @@ window.onload = function() {
 	//DrawActivity(paper,0);
 
 	//DrawActivities(paper,0);
-	DrawActivity(paper,0);
+	DrawElipse(paper,0);
 	DrawActivity(paper,1);
 	DrawActivity(paper,2);
 	DrawActivities(paper,3);
@@ -25,9 +25,19 @@ window.onload = function() {
 	}
 
 }
+function DrawElipse(paper,y){
+	if(isIfElse == 0){
+	var d = "M "+(width/2)+","+(-40+100*y)+" L "+(width/2)+","+(10+100*y);
+	paper.path(d);
+	}
+	paper.ellipse(50, 25, 50, 25).translate(width/2-50,10+100*y).attr({fill: '#D4FF5F'});
+	paper.text(width/2, 35+100*y, ReformatText("START")).attr({fill: '#000000',"font-size": 14, "font-family": "Arial, Helvetica, sans-serif"});
+	
+}
 function DrawLoopActivities(paper,y)
 {
-	paper.rect(0, 0, 110*3, 60,8).translate(width/2-55*3,5+100*y).attr({fill: '#ffff00'});
+	paper.text(width/2+ 110*2, 100*y+40, ReformatText("Repeat (10) times")).attr({fill: '#000000',"font-size": 12, "font-family": "Arial, Helvetica, sans-serif"});
+	paper.rect(0, 0, 110*3, 60,8).translate(width/2-55*3,5+100*y).attr({fill: '#D4FF5F'});
 	DrawSubActivity(paper,y,-1);
 	DrawSubActivity(paper,y,0);
 	DrawSubActivity(paper,y,1);
@@ -42,6 +52,13 @@ function DrawIfElseCondition(paper,y){
 }
 function DrawCondActivities(paper,y,offset)
 {
+	if(offset>0){
+			paper.text((width+offset*110)/2, 100*y-30, ReformatText("IF NOT")).attr({fill: '#000000',"font-size": 12, "font-family": "Arial, Helvetica, sans-serif"});
+
+	}else{
+			paper.text((width+offset*110)/2, 100*y-30, ReformatText(" IF YES")).attr({fill: '#000000',"font-size": 12, "font-family": "Arial, Helvetica, sans-serif"});
+
+	}
 	var d = "M "+(width/2)+","+(-40+100*y)+" L "+(width/2+offset*110)+","+(10+100*y);
 	paper.path(d);
 	paper.rect(0, 0, 110*3, 60).translate(width/2-55*3+offset*110,5+100*y).attr({fill: '#c0c0c0'});
@@ -62,7 +79,7 @@ function DrawCondSubActivity(paper,y,number)
 function DrawIfCondition(paper,y){
 	DrawCondition(paper,y);
 
-	paper.text(width/2+20, 100*y+80, ReformatText("then")).attr({fill: '#000000',"font-size": 12, "font-family": "Arial, Helvetica, sans-serif"});
+	paper.text(width/2+20, 100*y+80, ReformatText(" IF YES")).attr({fill: '#000000',"font-size": 12, "font-family": "Arial, Helvetica, sans-serif"});
 	DrawActivities(paper,y+1);
 }
 
@@ -74,7 +91,7 @@ function DrawCondition(paper,y)
 	}
 	var d = "M "+(width/2-50)+","+(35+100*y)+" L "+(width/2)+","+(10+100*y)+" L "+(width/2+50)+","+(35+100*y)+" L "+(width/2)+","+(60+100*y)+" L "+(width/2-50)+","+(35+100*y)+"";
 	 var condition = paper.path(d);
-	 condition.attr("fill", "#F4A460");
+	 condition.attr("fill", "#E8E053");
 	 paper.text(width/2, 35+100*y, ReformatText("If(Say 'I am cool')")).attr({fill: '#000000',"font-size": 9, "font-family": "Arial, Helvetica, sans-serif"});
 }
 
