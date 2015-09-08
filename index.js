@@ -21,21 +21,11 @@ window.onload = function() {
 	DrawElipse(paper,0);
 		//Loop for activities
 	for (j = 0; j < ActivitiesArray.length; j++) { 
-		//checking for sub activitiess
-		SubActivities = ActivitiesArray[j].split("/");	
-		if(SubActivities.length>1){
-			if(ActivitiesArray[j].toLowerCase().indexOf("repeat")>-1){
-				
-			}else{
-				
-			}
-			
+		
+		if(ActivitiesArray[j].split("+").length>1){
+			DrawActivities(paper,3,ActivitiesArray[j]);
 		}else{
-			if(ActivitiesArray[j].toLowerCase().indexOf("repeat")>-1){
-				
-			}else{
-				
-			}
+			
 			DrawActivity(paper,j+1,ActivitiesArray[j]);
 		}
 		
@@ -123,24 +113,33 @@ function DrawActivity(paper,y,ActText)
 	paper.rect(0, 0, 100, 50).translate(width/2-50,10+100*y).attr({fill: '#9cf'});
 	paper.text(width/2, 35+100*y, ReformatText(ActText)).attr({fill: '#000000'});
 }
-function DrawSubActivity(paper,y,number)
+function DrawSubActivity(paper,y,number,ActText)
 {
 	if(isIfElse == 0){
 	var d = "M "+(width/2)+","+(-40+100*y)+" L "+(width/2)+","+(10+100*y);
 	paper.path(d);
 	}
 	paper.rect(0, 0, 100, 50).translate(width/2-50 + 110*number,10+100*y).attr({fill: '#9cf'});
-	paper.text(width/2 + 110*number, 35+100*y, ReformatText("This should be inside it and This should be inside itshould be inside it")).attr({fill: '#000000'});
+	paper.text(width/2 + 110*number, 35+100*y, ReformatText(ActText)).attr({fill: '#000000'});
 }
 
 
-function DrawActivities(paper,y)
+function DrawActivities(paper,y,ActivitiesText)
 {
-
-	paper.rect(0, 0, 110*3, 60).translate(width/2-55*3,5+100*y).attr({fill: '#c0c0c0'});
-	DrawSubActivity(paper,y,-1);
-	DrawSubActivity(paper,y,0);
-	DrawSubActivity(paper,y,1);
+	SubActivitiesArray = ActivitiesText.split("+");
+	paper.rect(0, 0, 110*SubActivitiesArray.length, 60).translate(width/2-55*SubActivitiesArray.length,5+100*y).attr({fill: '#c0c0c0'});
+	
+	if(SubActivitiesArray.length%2 == 0){
+		for(iTemp = Math.ceil(-SubActivitiesArray.length/2) ; iTemp < Math.floor(SubActivitiesArray.length/2);iTemp++){
+			DrawSubActivity(paper,y,iTemp+.5,SubActivitiesArray[iTemp+Math.floor(SubActivitiesArray.length/2)]);
+		}
+	}else{
+		for(iTemp = Math.ceil(-SubActivitiesArray.length/2) ; iTemp <= Math.floor(SubActivitiesArray.length/2);iTemp++){
+			DrawSubActivity(paper,y,iTemp,SubActivitiesArray[iTemp+Math.floor(SubActivitiesArray.length/2)]);
+		}
+	}
+	
+	
 }
 
 
