@@ -10,7 +10,7 @@ var isIfElse = 0;
 window.onload = function() {
 	data=  getURLParameters("string_input");
 	ActivitiesArray = data.split(",");
-	height = (ActivitiesArray.length/5)*height;
+	height = (ActivitiesArray.length/3)*height;
 	
 	
 
@@ -23,15 +23,23 @@ window.onload = function() {
 	offset = 0;
 	for (j = 0; j < ActivitiesArray.length; j++) { 
 		if(ActivitiesArray[j].toLowerCase().indexOf("if")>-1){
-			DrawIfCondition(paper,j+1+offset,ActivitiesArray[j]);
+			if(ActivitiesArray[j].split("/").length>0){
+				DrawIfElseCondition(paper,j+1+offset,ActivitiesArray[j]);
+			}else{
+				DrawIfCondition(paper,j+1+offset,ActivitiesArray[j]);
+			}
 			offset  += 1;
 		}else if(ActivitiesArray[j].split("+").length>1){
 			DrawActivities(paper,j+1+offset,ActivitiesArray[j]);
-			
+			if(isIfElse == 1){
+				isIfElse = 0;
+			}
 		}else{
 			
 			DrawActivity(paper,j+1+offset,ActivitiesArray[j]);
-			
+			if(isIfElse == 1){
+				isIfElse = 0;
+			}
 		}
 		
 	
@@ -58,35 +66,45 @@ function DrawLoopActivities(paper,y)
 }
 
 
-function DrawIfElseCondition(paper,y){
-	DrawCondition(paper,y);
-	DrawCondActivities(paper,y+1,-2);
-	DrawCondActivities(paper,y+1,2);
+function DrawIfElseCondition(paper,y,ActText){
+	SubActivitiesArray = ActText.split("-");
+	DrawCondition(paper,y,SubActivitiesArray[0]);
+	
+	SubActivitiesArrayT = SubActivitiesArray[1].split("/");
+	DrawCondActivities(paper,y+1,-3,SubActivitiesArrayT[0]);
+	DrawCondActivities(paper,y+1,3,SubActivitiesArrayT[1]);
 	isIfElse = 1;
 }
-function DrawCondActivities(paper,y,offset)
+function DrawCondActivities(paper,y,offsetT,ActText)
 {
-	if(offset>0){
-			paper.text((width+offset*110)/2, 100*y-30, ReformatText("IF NOT")).attr({fill: '#000000',"font-size": 12, "font-family": "Arial, Helvetica, sans-serif"});
+	SubActivitiesArray = ActText.split("+");
+	if(offsetT>0){
+			paper.text((width+offsetT*110)/2, 100*y-30, ReformatText("IF NOT")).attr({fill: '#000000',"font-size": 12, "font-family": "Arial, Helvetica, sans-serif"});
 
 	}else{
-			paper.text((width+offset*110)/2, 100*y-30, ReformatText(" IF YES")).attr({fill: '#000000',"font-size": 12, "font-family": "Arial, Helvetica, sans-serif"});
+			paper.text((width+offsetT*110)/2, 100*y-30, ReformatText(" IF YES")).attr({fill: '#000000',"font-size": 12, "font-family": "Arial, Helvetica, sans-serif"});
 
 	}
-	var d = "M "+(width/2)+","+(-40+100*y)+" L "+(width/2+offset*110)+","+(10+100*y);
+	var d = "M "+(width/2)+","+(-40+100*y)+" L "+(width/2+offsetT*110)+","+(10+100*y);
 	paper.path(d);
-	paper.rect(0, 0, 110*3, 60).translate(width/2-55*3+offset*110,5+100*y).attr({fill: '#c0c0c0'});
-	DrawCondSubActivity(paper,y,-1+offset);
-	DrawCondSubActivity(paper,y,0+offset);
-	DrawCondSubActivity(paper,y,1+offset);
-	var d = "M "+(width/2)+","+(100*y+50+55)+" L "+(width/2+offset*110)+","+(10+100*y+55);
+	paper.rect(0, 0, 110*SubActivitiesArray.length, 60).translate(width/2-55*SubActivitiesArray.length+offsetT*110,5+100*y).attr({fill: '#c0c0c0'});
+	
+	if(SubActivitiesArray.length%2 == 0){
+		for(iTemp = Math.ceil(-SubActivitiesArray.length/2) ; iTemp < Math.floor(SubActivitiesArray.length/2);iTemp++){
+			DrawCondSubActivity(paper,y,iTemp+.5+offsetT,SubActivitiesArray[iTemp+Math.floor(SubActivitiesArray.length/2)]);
+		}
+	}else{
+		for(iTemp = Math.ceil(-SubActivitiesArray.length/2) ; iTemp <= Math.floor(SubActivitiesArray.length/2);iTemp++){
+			DrawCondSubActivity(paper,y,iTemp+offsetT,SubActivitiesArray[iTemp+Math.floor(SubActivitiesArray.length/2)]);
+		}
+	}
+	var d = "M "+(width/2)+","+(100*y+50+60)+" L "+(width/2+offsetT*110)+","+(10+100*y+55);
 	paper.path(d);
 }
-function DrawCondSubActivity(paper,y,number)
+function DrawCondSubActivity(paper,y,number,ActText)
 {
-
 	paper.rect(0, 0, 100, 50).translate(width/2-50 + 110*number,10+100*y).attr({fill: '#9cf'});
-	paper.text(width/2 + 110*number, 35+100*y, ReformatText("This should be inside it and This should be inside itshould be inside it")).attr({fill: '#000000'});
+	paper.text(width/2 + 110*number, 35+100*y, ReformatText(ActText)).attr({fill: '#000000'});
 }
 
 
